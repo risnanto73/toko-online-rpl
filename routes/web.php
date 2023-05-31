@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\WEB\CategoryController;
+use App\Http\Controllers\WEB\MyTransactionController;
 use App\Http\Controllers\WEB\ProductController;
 use App\Http\Controllers\WEB\ProductGalleryController;
 use App\Http\Controllers\WEB\TransactionController;
+use App\Http\Controllers\WEB\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +33,7 @@ Route::middleware(['auth'])->name('dashboard.')
         // 127.0.0.1:8000/category => sebelum ada prefix('dashboard')
         // category.index => sebelum ada name route('dashboard.')
         // dashboard.category.index => setelah ada name route('dashboard.')
+        Route::resource('/my-transaction', MyTransactionController::class);
 
         Route::middleware(['admin'])->group(function () {
             //Route yang ada didalam middleware admin maka 
@@ -40,6 +43,14 @@ Route::middleware(['auth'])->name('dashboard.')
             Route::resource('/product.gallery', ProductGalleryController::class)->only([
                 'index', 'create', 'store', 'destroy'
             ]);
-            Route::resource('/transaction', TransactionController::class);
+            Route::resource('/transaction', TransactionController::class)->only([
+                'index', 'show', 'edit', 'update'
+            ]);
+            Route::resource('/user', UserController::class)->only(
+                'index',
+                'edit',
+                'update',
+                'destroy'
+            );
         });
     });

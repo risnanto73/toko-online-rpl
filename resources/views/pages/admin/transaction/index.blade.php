@@ -2,6 +2,21 @@
 
 @section('content')
     <div class="container">
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-1"></i>
+                {!! \Session::get('success') !!}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                {!! \Session::get('error') !!}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">
@@ -35,15 +50,15 @@
                                 <td scope="col">{{ number_format($row->total_price) }}</td>
                                 <td scope="col">
                                     @if ($row->status == 'PENDING')
-                                    <span class="badge bg-warning">PENDING</span>
+                                        <span class="badge bg-warning">PENDING</span>
                                     @elseif ($row->status == 'SUCCESS')
-                                    <span class="badge bg-success">SUCCESS</span>
+                                        <span class="badge bg-success">SUCCESS</span>
                                     @elseif ($row->status == 'FAILED')
-                                    <span class="badge bg-danger">FAILED</span>
+                                        <span class="badge bg-danger">FAILED</span>
                                     @elseif ($row->status == 'SHIPPING')
-                                    <span class="badge bg-info">SHIPPING</span>
+                                        <span class="badge bg-info">SHIPPING</span>
                                     @elseif ($row->status == 'SHIPPED')
-                                    <span class="badge bg-primary">SHIPPED</span>
+                                        <span class="badge bg-primary">SHIPPED</span>
                                     @endif
                                 </td>
                                 <td scope="col">
@@ -52,7 +67,7 @@
                                         Show
                                     </a>
 
-                                    <a href="" class="btn btn-warning">
+                                    <a href="{{ route('dashboard.transaction.edit', $row->id) }}" class="btn btn-warning">
                                         <i class="bi bi-pencil"></i>
                                         Edit
                                     </a>

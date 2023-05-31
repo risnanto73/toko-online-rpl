@@ -7,7 +7,7 @@ use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class MyTransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +16,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transaction = Transaction::latest()->get();
+        $myTransaction = Transaction::with(['user'])
+            ->where('users_id', auth()->user()->id)->get();
 
-        return view('pages.admin.transaction.index', compact(
-            'transaction'
+        return view('pages.admin.my_transaction.index', compact(
+            'myTransaction'
         ));
     }
 
@@ -50,16 +51,13 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $myTransaction)
     {
-        //! Fungsi yang menampilkan halaman data
-
-        //get data transaction item
         $transactionItem = TransactionItem::with(['product'])
-            ->where('transactions_id', $transaction->id);
+            ->where('transactions_id', $myTransaction->id)->get();
 
-        return view('pages.admin.transaction.show', compact(
-            'transaction',
+        return view('pages.admin.my_transaction.show', compact(
+            'myTransaction',
             'transactionItem'
         ));
     }
@@ -70,14 +68,9 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transaction)
+    public function edit($id)
     {
-        //! Fungsi yang menampilkan halaman edit data
-
-        //get data transaction
-        return view('pages.admin.transaction.edit', compact(
-            'transaction'
-        ));
+        //
     }
 
     /**
@@ -87,28 +80,9 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Request $request, $id)
     {
-        //! Fungsi yang mengupdate data
-
-        //validasi data
-        $request->validate([
-            'status' => 'required|in:PENDING,SUCCESS,FAILED,SHIPPING,SHIPPED'
-        ]);
-
-        //update data
-        $transaction->update([
-            'status' => $request->status
-        ]);
-
-        //redirect ke halaman index
-        if ($transaction) {
-            return redirect()->route('dashboard.transaction.index')
-                ->with('success', 'Data berhasil diupdate');
-        } else {
-            return redirect()->route('dashboard.transaction.index')
-                ->with('error', 'Data gagal diupdate');
-        }
+        //
     }
 
     /**
