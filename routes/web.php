@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\WEB\CategoryController;
+use App\Http\Controllers\WEB\FrontEndController;
 use App\Http\Controllers\WEB\MyTransactionController;
 use App\Http\Controllers\WEB\ProductController;
 use App\Http\Controllers\WEB\ProductGalleryController;
@@ -19,20 +20,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [FrontEndController::class, 'index']);
+Route::get('/detail-product/{slug}', [FrontEndController::class, 'detailProduct'])
+    ->name('detailProduct');
+Route::get(
+    '/detail-category/{slug}',
+    [FrontEndController::class, 'detailCategory']
+)
+    ->name('detailCategory');
 
 Auth::routes();
+
+Route::middleware(['auth', 'verified'])
+    ->group(function () {
+        Route::get('/cart', [FrontEndController::class, 'cart'])
+            ->name('cart');
+        Route::post('/cart/{id}', [FrontEndController::class, 'cartStore'])
+            ->name('cartStore');
+    });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->name('dashboard.')
     ->prefix('dashboard')->group(function () {
-        // 127.0.0.1:8000/dashboard/category => setelah ada prefix('dashboard')
-        // 127.0.0.1:8000/category => sebelum ada prefix('dashboard')
-        // category.index => sebelum ada name route('dashboard.')
-        // dashboard.category.index => setelah ada name route('dashboard.')
+
         Route::resource('/my-transaction', MyTransactionController::class);
 
         Route::middleware(['admin'])->group(function () {

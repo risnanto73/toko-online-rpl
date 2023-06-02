@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('email');
             $table->longText('address');
             $table->string('phone');
-            $table->string('courier');
+            $table->string('courier')->nullable();
             $table->integer('total_price');
             $table->string('status')->default('PENDING');
-            $table->string('payment');
-            $table->string('payment_url');
+            $table->string('payment')->default('MIDTRANS');
+            $table->string('payment_url')->nullable();
             
             $table->timestamps();
             // created_at, updated_at

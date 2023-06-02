@@ -21,6 +21,12 @@
             <div class="card-body">
                 <h5 class="card-title">Product</h5>
 
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    Jangan lupa add product Gallery
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('dashboard.product.create') }}" class="btn btn-primary">Create Product</a>
                 </div>
@@ -48,7 +54,8 @@
                                     {!! Str::limit($row->description, 20) !!}
                                 </td>
                                 <td>
-                                    <a href="{{ route('dashboard.product.gallery.index', $row->id) }}" class="btn btn-success">
+                                    <a href="{{ route('dashboard.product.gallery.index', $row->id) }}"
+                                        class="btn btn-success">
                                         <i class="bi bi-camera"></i>
                                         Gallery
                                     </a>
@@ -63,7 +70,7 @@
                                         Edit
                                     </a>
 
-                                    <form action="{{ route('dashboard.product.destroy' ,$row->id) }}" method="post">
+                                    <form action="{{ route('dashboard.product.destroy', $row->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger mt-1">
@@ -76,12 +83,13 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center">Data Product Kosong</td>
+                                <td colspan="6" class="text-center">Data Product Kosong</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
+
             </div>
         </div>
     </div>
