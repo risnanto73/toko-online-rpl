@@ -41,6 +41,10 @@ Route::middleware(['auth', 'verified'])
             ->name('cart');
         Route::post('/cart/{id}', [FrontEndController::class, 'cartStore'])
             ->name('cartStore');
+        Route::delete('/cart/{id}', [FrontEndController::class, 'cartDelete'])
+            ->name('cartDelete');
+        Route::post('/checkout', [FrontEndController::class, 'checkout'])
+            ->name('checkout');
     });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
