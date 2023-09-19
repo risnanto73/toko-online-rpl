@@ -149,17 +149,12 @@ class FrontEndController extends Controller
         //setup variable for midtrans
         $midtrans = [
             'transaction_details' => [
-                'order_id'      => 'TR-' . $transaction->id,
-                'gross_amount'  => (int) $transaction->total_price,
+                'order_id' => 'MIDTRANS-' . $transaction->id,
+                'gross_amount' => (int) $transaction->total_price
             ],
             'customer_details' => [
-                'first_name'    => $transaction->name,
-                'email'         => $transaction->email,
-                'phone'         => $transaction->phone,
-                'address'       => $transaction->address,
-            ],
-            'enabled_payments' => [
-                'gopay', 'bank_transfer'
+                'first_name' => $transaction->name,
+                'email' => $transaction->email
             ],
             'vtweb' => []
         ];
